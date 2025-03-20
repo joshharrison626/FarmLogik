@@ -51,12 +51,12 @@ type ManageLivestockResponse = {
     error: Error | null;
     getLivestock: () => void;
     addLivestock: (animal: Animal) => void;
-    updateLivestock: (id: string, animal: Animal) => void;
+    updateLivestock: (animal: Animal) => void;
     deleteLivestock: (id: string) => void;
 };
 
 export default function useManageLivestock(): ManageLivestockResponse {
-    const [data, setData] = useState<Animal[]>([]);
+    const [data, setData] = useState<Animal[]>(mockAnimals);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<Error | null>(null);
     
@@ -69,26 +69,26 @@ export default function useManageLivestock(): ManageLivestockResponse {
     }, []);
 
     const getLivestock = () => {
-        debugger;
         setLoading(true);
         setError(null);
         setTimeout(() => {
-            setData((prev) => {
-                if (prev.length !== mockAnimals.length) {
-                    return [...prev, ...mockAnimals];
-                }
-                return [...prev];
-            });
+            // setData((prev) => {
+            //     if (prev.length !== mockAnimals.length) {
+            //         return [...prev, ...mockAnimals];
+            //     }
+            //     return [...prev];
+            // });
             setLoading(false);
         }, 1000);
     }
 
     const addLivestock = (animal: Animal) => {
+        debugger;
         setData((prev) => [...prev, animal]);
     };
 
-    const updateLivestock = (id: string, animal: Animal) => {
-        setData((prev) => prev.map((a) => a.id === id ? animal : a));
+    const updateLivestock = (animal: Animal) => {
+        setData((prev) => prev.map((a) => a.id === animal.id ? animal : a));
     };
 
     const deleteLivestock = (id: string) => {

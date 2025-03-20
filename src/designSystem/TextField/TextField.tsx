@@ -4,11 +4,11 @@ type TextFieldProps = {
     label: string;
     placeholder?: string;
     value?: string;
+    inputRef?: React.RefObject<HTMLInputElement>;
 };
 
-const TextField = ({label, placeholder, value}: TextFieldProps) => {
+const TextField = ({label, placeholder, value, inputRef}: TextFieldProps) => {
     const id = useId();
-    const inputRef = useRef<HTMLInputElement>(null);
 
     return (
         <div className="flex flex-col gap-1">

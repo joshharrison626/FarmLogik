@@ -10,7 +10,7 @@ import { Animal } from '../types';
 const Livestock = () => {
   const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(null);
   const [showPanel, setShowPanel] = useState(false);
-  const { data: livestock, loading, error, getLivestock, updateLivestock } = useManageLivestock();
+  const { data: livestock, loading, error, getLivestock, addLivestock, updateLivestock } = useManageLivestock();
 
   const showAddEditPanel = (animal?: Animal) => {
     setSelectedAnimal(animal || null);
@@ -22,7 +22,12 @@ const Livestock = () => {
   };
 
   const handleSaveAnimal = (animal: Animal) => {
-    updateLivestock(animal.id, animal);
+    if (animal.id) {
+      updateLivestock(animal);
+    } else {
+      addLivestock(animal);
+    }
+
     getLivestock();
     setShowPanel(false);
   };
@@ -31,7 +36,7 @@ const Livestock = () => {
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Livestock</h1>
-        <Button onClick={showAddEditPanel}>
+        <Button onClick={() => showAddEditPanel()}>
           <Plus size={20} className="mr-2" />
           Add Animal
         </Button>
@@ -53,7 +58,10 @@ const Livestock = () => {
                     <h3 className="text-lg font-semibold">{animal.name}</h3>
                     <p className="text-gray-600">{animal.breed}</p>
                   </div>
-                  <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                  <button
+                    className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+                    onClick={() => showAddEditPanel(animal)}  
+                  >
                     <Edit size={18} />
                   </button>
                 </div>
@@ -67,7 +75,7 @@ const Livestock = () => {
                   </span>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  {animal.tags.map((tag, index) => (
+                  {animal.tags?.map((tag, index) => (
                     <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded-md text-sm">
                       {tag}
                     </span>
